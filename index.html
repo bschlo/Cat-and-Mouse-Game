@@ -1,46 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/style.css" />
     <script defer src="./js/app.js"></script>
     <title>Cat and Mouse Game</title>
-</head>
-<body>
+  </head>
+  <body>
+    <span class="sun"></span>
     <h1>Cat and Mouse Game</h1>
     <h2 id="message">Message</h2>
     <section id="main-container">
-    <main id="main">
+      <main id="main">
+        <section class="score-container">Score
+          <section id="score">
+            <div id="mouse-tally">Mouse Tally: 0</div>
+            <div id="cat-tally">Cat Tally: 0</div>
+          </section>
+        <button id="reset">Reset Game</button>
+        </section>
+        <section class="house">
         <section id="tri-container">
-        <h3 id='tri'>
-                <section id="window-container">
-                <div id="window">  
+          <h3 id="tri">
+            <section id="window-container">
+              <div id="window">
                 <div class="pane" id="1"></div>
                 <div class="pane" id="2"></div>
                 <div class="pane" id="3"></div>
                 <div class="pane" id="4"></div>
-                </div>
-                </section>
-        </h3>
+              </div>
+            </section>
+          </h3>
         </section>
         <section class="board">
-            <div class="sqr" id="0"></div>
-            <div class="sqr" id="1"></div>
-            <div class="sqr" id="2"></div>
-            <div class="sqr" id="3"></div>
-            <div class="sqr" id="4"></div>
-            <div class="sqr" id="5"></div>
-            <div class="sqr" id="6"></div>
-            <div class="sqr" id="7"></div>
-            <div class="sqr" id="8"></div>
+          <div class="sqr" id="0"></div>
+          <div class="sqr" id="1"></div>
+          <div class="sqr" id="2"></div>
+          <div class="sqr" id="3"></div>
+          <div class="sqr" id="4"></div>
+          <div class="sqr" id="5"></div>
+          <div class="sqr" id="6"></div>
+          <div class="sqr" id="7"></div>
+          <div class="sqr" id="8"></div>
         </section>
-        <button id="reset">Reset Game</button>
-        <section class="tally">
-            <div id="mouse-tally">Mouse tally</div> 
-            <div id="cat-tally">Cat tally</div> 
-        </section>
-    </main>
-</section>
-</body>
+        <section class="house">
+        <section class="tally"></section>
+      </main>
+    </section>
+  </body>
 </html>

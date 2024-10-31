@@ -1,11 +1,17 @@
-let board = ""
+let board = []
 let mouseTracker = []
-let winner = ""
-let loser = ""
-let mouse = 'mouse'
-let cat = 'cat'
+let winner = false
+let loser = false
+let mouse = '🐁'
+let cat = '🐈'
+let cheese = '🧀'
 let mousePosition = ''
 let catPosition =''
+let mouseScore = 0
+let catScore = 0
+
+
+let gameOver = false
 
 
 const squareEls = document.querySelectorAll(".sqr")
@@ -17,50 +23,42 @@ const catTally = document.querySelector("#cat-tally")
 
 
 const init = () => {
-    board = ['','','','','','','','','']
+    board = [cheese, cheese,cheese,cheese,cheese,cheese,cheese,cheese,cheese]
     winner = false
     loser = false
-    mouse = board[0]
-    cat = board[8]
+    mouseTracker =[]
     render ()
 }
 
 const render = () => {
     updateBoard()
     updateMessage()
-    updateTally()
 }
 
 const updateBoard = () => {
     board.forEach((box, index) => {
       const square = squareEls[index];
   
-      if (box === "cat") {
-        square.innerText = "cat";
-      } else if (box === "mouse") {
-        square.innerText = "mouse";
+      if (box === cat) {
+        square.innerText = cat;
+      } else if (box === mouse) {
+        square.innerText = mouse;
+      } else if (box === cheese) {
+        square.innerText = cheese;
       } else {
-        square.innerText = "";
+        square.innerText = ''
       }
     });
   };
 
 const updateMessage = () => {
-    if (winner === false && loser === true) {
-        messageEl.innerText = `The cat gotcha`
-    } else if (winner === true) {
-        messageEl.innerText = `You win`
+    if (winner === false && loser === true && gameOver === true) {
+        messageEl.innerText = `THE CAT GOT YOU - YOU'RE DEAD. Click the reset button to start a new game.`
+    } else if (winner === true && gameOver === true) {
+        messageEl.innerText = `CONGRATS YOU GOT ALL THE CHEESE`
+        winner = false
     } else if (winner === false && loser === false) {
-       messageEl.innerText = `Play your turn`
-    }
-}
-
-const updateTally = () => {
-    if (winner === true) {
-        mouseTally.innerText + 1
-    }
-    else if (loser === true) {
-        catTally.innerText += 1
+       messageEl.innerText = `Collect All The Cheese To Win`
     }
 }
 
@@ -69,40 +67,77 @@ init ()
 const winningCombo = [0,1,2,3,4,5,6,7,8]
 
 const handleClick = (event) => {
-    const squareIndex = event.target.id
-    const mousePlacedPiece = mousePlacePiece(squareIndex)
-    
-    updateMouseTracker(mousePlacedPiece)
-    catPlacePiece(squareIndex)
+    if (gameOver === true) {
+        return
+    }
+    board.innerText = ''
+    const squareIndex = parseInt(event.target.id)
+    mousePlacePiece(squareIndex)
+    updateMouseTracker(squareIndex)
+    catPlacePiece()
     checkIfWinner()
     render()
 }
 
+const catPlacePiece = () => {
+    const previousCatPosition = board.indexOf (cat)
+    if (previousCatPosition !== -1) {
+        board[previousCatPosition] = ''
+    }
+    newCatPosition = Math.floor(Math.random() * 9)
+    catPosition = newCatPosition
+    board[catPosition] = cat
+    
+}
+
 const mousePlacePiece = (index) => {
-    mousePosition = squareEls[index]
-    mousePosition.innerText = 'mouse'
-    return mousePosition
+    const previousMousePosition = board.indexOf(mouse);
+    if (previousMousePosition !== -1) {
+        board[previousMousePosition] = '';
+    }
+    board[index] = mouse;
+    mousePosition = index;
 }
 
 const updateMouseTracker = (currentPosition) => {
-    mouseTracker.push(parseInt(currentPosition.id))
-}
-
-const catPlacePiece = (index) => [
-    catPosition = Math.floor(Math.random()* 9)
-]
-
-const checkIfWinner = () => {
-    
-    if (mouseTracker.every(num => winningCombo.includes(num) && mouseTracker.length === 9)) {
-        winner = true
-        loser = false
-    } else if (catPosition === mousePosition) {
-        winner = false
-        loser = true
+    if (!mouseTracker.includes(currentPosition)) { 
+        mouseTracker.push(parseInt(currentPosition))
     }
 }
 
-squareEls.forEach((square) => [
-    square.addEventListener ('click', handleClick)
-])
+const checkIfWinner = () => {
+
+if (!winner) {
+    if (mouseTracker.every(num => winningCombo.includes(num) && mouseTracker.length === 9)) {
+        winner = true
+        loser = false
+        mouseScore += 1
+        mouseTally.innerText = `Mouse Tally: ${mouseScore}`
+        gameOver = true
+
+    } else if (catPosition === mousePosition) {
+        winner = false
+        loser = true
+        catScore += 1
+        catTally.innerText = `Cat Tally: ${catScore}`
+        gameOver = true
+    } 
+}
+}
+
+squareEls.forEach((square) => {
+  square.addEventListener("click", handleClick);
+});
+
+const reset = () => {
+    resetBtn.addEventListener('click', () => {
+
+    gameOver = false
+    loser = false
+    winner = false
+    mouseTracker = []
+    init()
+})
+}
+
+reset()
