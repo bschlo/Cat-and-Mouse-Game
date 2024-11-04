@@ -5,13 +5,12 @@ let loser = false
 let mouse = '🐁'
 let cat = '🐈'
 let cheese = '🧀'
-let mousePosition = ''
-let catPosition =''
+let mousePosition = 0
+let catPosition = 8
 let mouseScore = 0
 let catScore = 0
-
-
 let gameOver = false
+let previousSquareValue = cheese
 
 
 const squareEls = document.querySelectorAll(".sqr")
@@ -24,9 +23,11 @@ const catTally = document.querySelector("#cat-tally")
 
 const init = () => {
     board = [cheese, cheese,cheese,cheese,cheese,cheese,cheese,cheese,cheese]
+    board [0] = mouse
+    board [8] = cat
     winner = false
     loser = false
-    mouseTracker =[]
+    mouseTracker = []
     render ()
 }
 
@@ -53,7 +54,7 @@ const updateBoard = () => {
 
 const updateMessage = () => {
     if (winner === false && loser === true && gameOver === true) {
-        messageEl.innerText = `THE CAT GOT YOU - YOU'RE DEAD. Click the reset button to start a new game.`
+        messageEl.innerText = `THE CAT GOT YOU. Click the reset button to start a new game.`
     } else if (winner === true && gameOver === true) {
         messageEl.innerText = `CONGRATS YOU GOT ALL THE CHEESE`
         winner = false
@@ -70,7 +71,6 @@ const handleClick = (event) => {
     if (gameOver === true) {
         return
     }
-    board.innerText = ''
     const squareIndex = parseInt(event.target.id)
     mousePlacePiece(squareIndex)
     updateMouseTracker(squareIndex)
@@ -79,19 +79,33 @@ const handleClick = (event) => {
     render()
 }
 
+const movesAllowed = {
+    0: [1, 3],
+    1: [0, 2, 4],
+    2: [1, 5],
+    3: [0, 4, 6],
+    4: [1, 3, 5, 7],
+    5: [2, 4, 8],
+    6: [3, 7],
+    7: [4, 6, 8],
+    8: [5, 7],
+}
+
 const catPlacePiece = () => {
-    const previousCatPosition = board.indexOf (cat)
-    if (previousCatPosition !== -1) {
-        board[previousCatPosition] = ''
-    }
-    newCatPosition = Math.floor(Math.random() * 9)
-    catPosition = newCatPosition
-    board[catPosition] = cat
-    
+    const previousCatPosition = board.indexOf(cat) 
+
+        if (previousCatPosition !== -1) {
+                board[previousCatPosition] = previousSquareValue
+        }
+        newCatPosition = Math.floor(Math.random() * 9)
+        previousSquareValue = board[newCatPosition]
+        catPosition = newCatPosition
+        board[catPosition] = cat
 }
 
 const mousePlacePiece = (index) => {
     const previousMousePosition = board.indexOf(mouse);
+
     if (previousMousePosition !== -1) {
         board[previousMousePosition] = '';
     }
@@ -112,14 +126,14 @@ if (!winner) {
         winner = true
         loser = false
         mouseScore += 1
-        mouseTally.innerText = `Mouse Tally: ${mouseScore}`
+        mouseTally.innerText = `Mouse Wins: ${mouseScore}`
         gameOver = true
 
     } else if (catPosition === mousePosition) {
         winner = false
         loser = true
         catScore += 1
-        catTally.innerText = `Cat Tally: ${catScore}`
+        catTally.innerText = `Cat Wins: ${catScore}`
         gameOver = true
     } 
 }
