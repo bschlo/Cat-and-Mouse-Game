@@ -5,12 +5,12 @@ let loser = false
 let mouse = '🐁'
 let cat = '🐈'
 let cheese = '🧀'
-let mousePosition = ''
-let catPosition = ''
+let mousePosition = 8
+let catPosition = 0
 let mouseScore = 0
 let catScore = 0
 let gameOver = false
-let previousSquareValue = cheese
+
 
 
 const squareEls = document.querySelectorAll(".sqr")
@@ -61,7 +61,7 @@ const updateMessage = () => {
     }
 }
 
-init ()
+
 
 const winningCombo = [0,1,2,3,4,5,6,7,8]
 
@@ -86,7 +86,7 @@ const movesAllowed = {
     5: [2, 4, 8],
     6: [3, 7],
     7: [4, 6, 8],
-    8: [5, 7],
+    8: [5, 7]
 }
 
 const catPlacePiece = () => {
@@ -118,21 +118,20 @@ const updateMouseTracker = (currentPosition) => {
 }
 
 const checkIfWinner = () => {
+    if (!winner) {
+        if (mouseTracker.every(num => winningCombo.includes(num) && mouseTracker.length === 9)) {
+            winner = true
+            loser = false
+            mouseScore += 1
+            mouseTally.innerText = `Mouse Wins: ${mouseScore}`
+            gameOver = true
 
-if (!winner) {
-    if (mouseTracker.every(num => winningCombo.includes(num) && mouseTracker.length === 9)) {
-        winner = true
-        loser = false
-        mouseScore += 1
-        mouseTally.innerText = `Mouse Wins: ${mouseScore}`
-        gameOver = true
-
-    } else if (catPosition === mousePosition) {
-        winner = false
-        loser = true
-        catScore += 1
-        catTally.innerText = `Cat Wins: ${catScore}`
-        gameOver = true
+        } else if (catPosition === mousePosition) {
+            winner = false
+            loser = true
+            catScore += 1
+            catTally.innerText = `Cat Wins: ${catScore}`
+            gameOver = true
     } 
 }
 }
@@ -152,4 +151,5 @@ const reset = () => {
 })
 }
 
+init ()
 reset()
