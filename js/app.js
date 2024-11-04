@@ -5,8 +5,8 @@ let loser = false
 let mouse = '🐁'
 let cat = '🐈'
 let cheese = '🧀'
-let mousePosition = 0
-let catPosition = 8
+let mousePosition = ''
+let catPosition = ''
 let mouseScore = 0
 let catScore = 0
 let gameOver = false
@@ -22,9 +22,7 @@ const catTally = document.querySelector("#cat-tally")
 
 
 const init = () => {
-    board = [cheese, cheese,cheese,cheese,cheese,cheese,cheese,cheese,cheese]
-    board [0] = mouse
-    board [8] = cat
+    board = [cheese,cheese,cheese,cheese,cheese,cheese,cheese,cheese,cheese]
     winner = false
     loser = false
     mouseTracker = []
